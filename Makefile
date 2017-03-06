@@ -31,11 +31,11 @@ build:
 rebuild: prechecks build test lint
 
 check: test
-	# tests should fail if go fmt results in uncommitted code
+	# Tests should fail if go fmt results in uncommitted code
 	git status --porcelain
 	/bin/bash -c 'test $$(git status --porcelain | wc -l) == 0'
 test:
-	# should run with -tags=system at some point..... i.e.:
+	# Should run with -tags=system at some point..... i.e.:
 	# go test -tags=system -v -race $$(go list ./... | grep -v /vendor/)
 	go test -v -race $$(go list ./... | grep -v /vendor/)
 
@@ -52,6 +52,5 @@ tc-worker:
 lint:
 	go get github.com/alecthomas/gometalinter
 	gometalinter --install
-	# not enabled: aligncheck, deadcode, dupl, errcheck, gas, gocyclo, structcheck, unused, varcheck
-	# Disabled: testify, test (these two show test errors, hence, they run tests)
+	# Not enabled: aligncheck, deadcode, dupl, errcheck, gas, gocyclo, structcheck, unused, test (runs all tests), testify (runs all tests), varcheck
 	gometalinter --deadline=10m --line-length=180 --vendor --vendored-linters --disable-all --enable=goconst --enable=gofmt --enable=goimports --enable=golint --enable=gosimple --enable=gotype --enable=ineffassign --enable=interfacer --enable=lll --enable=misspell --enable=staticcheck --enable=unconvert --enable=vet --enable=vetshadow ./...
